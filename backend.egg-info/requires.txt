@@ -1,0 +1,6 @@
+SQLAlchemy
+flask
+flask-cors
+flask-restful
+flask-sqlalchemy
+jsonschema
