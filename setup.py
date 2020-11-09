@@ -11,6 +11,7 @@ setup(
         "flask-sqlalchemy",
         "SQLAlchemy",
         "jsonschema",
-        "flask-restful"
+        "flask-restful",
+        "pycryptodome"
     ],
 )
