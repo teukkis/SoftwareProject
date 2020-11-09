@@ -1,3 +1,5 @@
+### Backend
+
 1. Create virtual machine 
   `python3 -m venv /path/to/virtualenv`
 
@@ -17,4 +19,8 @@
 5. Start the app
   `flask run`
 
-  
+### Frontend
+
+1. Install node.js
+2. npm install ( npm rebuild if didn't work)
+3. npm start in dir frontend
