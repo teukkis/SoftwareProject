@@ -24,3 +24,11 @@
 1. Install node.js
 2. npm install ( npm rebuild if didn't work)
 3. npm start in dir frontend
+
+
+Database:
+| VirtualMachine |     User     |
+|----------------|--------------|
+|Port            |Username      |
+|User            |ConnectionTime|
+|StartTime       |DisconnectTime|
