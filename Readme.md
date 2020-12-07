@@ -31,5 +31,5 @@ Database:
 |----------------|--------------|
 |Port            |Username      |
 |User            |ConnectionTime|
-|StartTime       |DisconnectTime|
+|                |DisconnectTime|
 |                |SSH-key       |
