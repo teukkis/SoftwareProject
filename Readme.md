@@ -27,9 +27,8 @@
 
 
 Database:
-| VirtualMachine |     User     |
-|----------------|--------------|
-|Port            |Username      |
-|User            |ConnectionTime|
-|                |DisconnectTime|
-|                |SSH-key       |
+|virtual_machine |student        |
+|----------------|---------------|
+|id              |id             |
+|user            |connect_time   |
+|                |disconnect_time|
