@@ -1,0 +1,17 @@
+##################################################################################################################################################################
+Welcome to the Chipwhisperer server.
+Wait for the server to send you port that you need to forward in your PuTTy-program.
+How to forward the port:
+1. Click the PuTTy-icon in the top-left corner of the window
+2. Press on "Change Settings..."
+3. Go to Category: Connection->SSH->Tunnels
+4. Write the port into the "Source port"-field
+5. Into "Destination".field you need to write: "localhost:xxxx" where xxxx = port
+6. Don't change any other settings and press "Add"-button
+7. Press Apply and you are done. Now you can access your Jupyter notebook by writing: "localhost:xxxx" to your browsers address field (xxxx = port)
+
+After you are done with your exercises or want to continue later type "disconnect" and you will be disconnected.
+
+IF YOU CLOSE PUTTY WITHOUT DISCONNECTING FIRST THE VIRTUAL MACHINE WILL STAY ON AND CAN'T BE ACCESSED BY OTHER STUDENTS
+##################################################################################################################################################################
+
