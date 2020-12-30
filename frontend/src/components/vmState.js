@@ -11,7 +11,7 @@ import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 
-import vmService from '../services/vmService'
+import {getVMs, removeUser} from '../services/vmService'
 import { setVms } from '../redux/vm'
 
 
@@ -19,11 +19,6 @@ const columns = [
   {
     field: 'id',
     headerName: 'ID',
-    width: 180
-  },
-  {
-    field: 'state',
-    headerName: 'State',
     width: 180
   },
   {
@@ -54,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 10,
   },
   dataGrid: {
-    height: 200,
+    height: 250,
     width: '96%',
     marginLeft: 14,
     paddingTop: 10
@@ -86,14 +81,16 @@ const VMState = () => {
   }
 
   const freeVm = () => {
-
+    removeUser(activeInfo)
+    .then(response => {
+      console.log(response)
+    })
     setActiveInfo('')
     handleClose()
   }
 
   const refreshVMs = () => {
-    vmService
-      .getVMs()
+      getVMs()
       .then(response => {
         dispatch( setVms(response) )
       }).catch( error => console.log("couldn't retrieve vms"))
@@ -142,9 +139,9 @@ const VMState = () => {
                   Available actions for virtual machine {activeInfo}
                 </Typography>
               </Grid>
-              <Grid item xs={5}>
+              <Grid item xs={6}>
                 <Typography variant="caption" gutterBottom>
-                  Delete the workspace
+                  Shut down the virtual machine
                 </Typography>
                 <div className={classes.deleteButton}>
                   <Button 
@@ -169,7 +166,7 @@ const VMState = () => {
                     size="small"
                     variant="outlined"
                     >
-                      Clear
+                      Kick out
                   </Button>
                 </div>
               </Grid>

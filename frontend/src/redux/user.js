@@ -12,6 +12,11 @@ const userReducer = ( state = initialState, action ) => {
 
   switch ( action.type ) {
     case SET_USERS:
+      const currentTime = new Date().getTime()
+      action.payload.map(u => {
+        let timeOnLine = currentTime - new Date(u.connect_time).getTime()
+        u.connect_time = parseFloat(timeOnLine / (60 * 60 * 1000)).toFixed(2)
+      })
       return { ...state, users: action.payload }
 
     case DELETE_USER:
@@ -25,7 +30,7 @@ const userReducer = ( state = initialState, action ) => {
   }
 }
 
-export const setUsers = ( users ) => {
+export const setUsers = ( users ) => {  
   return  {
     type: SET_USERS,
     payload: users

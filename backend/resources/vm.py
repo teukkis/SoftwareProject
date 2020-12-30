@@ -4,53 +4,40 @@ from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
 from jsonschema import validate, ValidationError
 from backend import db
-from backend.models import VirtualMachinem
+from software import database_commands
+from software import vm_commands
 
 
 class Vm(Resource):
 
-  # Modify the state of a virtual machine, DOWN or UP
+  # Modify the state of a virtual machine, 
   def put(self, id):
-    found_vm = VirtualMachinem.query.filter_by(id == id).first()
-    if found_vm is None:
-      data = {
-        "message": "Not found"
-      }
-      return Response(json.dumps(data), status=404)
 
-    if request.json["state"] == "UP":
-      #TODO a script for starting the vm based on it's id
-      found_vm.state=request.json["state"]
+    success = database_commands.empty_vm(id)
+    vm_commands.CloseVM(id)
 
-    elif request.json["state"] == "DOWN":
-      #TODO a script for shutting down the vm based on it's id
-      found_vm.state=request.json["state"]
-    
-    db.session.commit()
+    if success == True:
+      return Response(status=204)
+
+    else:
+      return Response(status=400)
 
   # Delete the virtual machine (propably not needed at this point)
   def delete(self, id):
-    found_vm = VirtualMachinem.query.filter_by(id == id).first()
-    if found_vm is None:
-      data = {
-        "message": "Not found"
-      }
-      return Response(json.dumps(data), status=404)
-
-    db.session.delete(found_vm)
-    db.session.commit()
-
-    return Response(status=204)
+    pass
 
 class Vms(Resource):
 
   # Fetch all virtual machines from the DB
   def get(self):
+    vms = database_commands.get_vms()
+    print(vms)
     data = []
-    for vm in VirtualMachinem.query.all():
+    for vm in vms:
+      print(vm)
       tempData = {
         "id": vm.id,
-        "state": vm.state,
+        "user": vm.user,
       }
       data.append(tempData)
 

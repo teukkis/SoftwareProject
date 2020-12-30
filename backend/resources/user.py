@@ -4,54 +4,44 @@ from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
 from jsonschema import validate, ValidationError
 from backend import db
-from backend.models import Userm
+from software import database_commands
+from software import file_commands
 from Crypto.PublicKey import RSA
-import uuid
 
 # This bad boy is executed when request comes to the endpoint /api/user/
 class User(Resource):
 
   # Fetch one user based on its id
   def get(self, id):
-
-    # query db for user
-    found_user = Userm.query.filter_by(id=id).first()
-    if found_user is None:
+    student = database_commands.get_student_by_id(id)
+    if student is None:
       data = {
       "message": "Not found"
     }
       return Response(json.dumps(data), status=404)
 
-
     data = {
-      "id": found_user.id,
-      "status": found_user.status,
-      "privateKey": found_user.privateKey,
-      "publicKey": found_user.publicKey
+      "id": student.id,
+      "connect_time": str(student.connect_time),
+      "disconnect_time": str(student.disconnect_time),
     }
     return Response(json.dumps(data), status=200, mimetype='application/json')
 
   # Delete the user based on its id
   def delete(self, id):
-    found_user = Userm.query.filter_by(id=id).first()
-    if found_user is None:
-      data = {
-        "message": "Not found"
-      }
-      return Response(json.dumps(data), status=404)
+    
+    failure = database_commands.delete_user(id)
 
-    db.session.delete(found_user)
-    db.session.commit()
+    if failure == False:
+      file_commands.delete_user(id)
+      return Response(status=204)
 
-    return Response(status=204)
+    else:
+      print(failure)
+      return Response(status=404)
+
 
   def put(self, id):
-    found_user = Userm.query.filter_by(id=id).first()
-    if found_user is None:
-        data = {
-          "message": "Not found"
-        }
-        return Response(json.dumps(data), status=404)
 
     key = RSA.generate(1024)
     privateKey = key.exportKey('PEM')
@@ -59,31 +49,33 @@ class User(Resource):
     pubkey = key.publickey()
     publicKey = pubkey.exportKey('OpenSSH')
 
-    
-    # Create a new user object
     new_privateKey=str(privateKey)
     new_publicKey=str(publicKey)
 
-    data = {
-      "privateKey": new_privateKey,
-      "publicKey": new_publicKey
-    }
+    success = database_commands.changePublicKey(id)
 
-    db.session.commit()
+    if success:
+      data = {
+        "privateKey": new_privateKey,
+      }
+      return Response(json.dumps(data), status=201)
 
-    return Response(json.dumps(data), status=201)
+    else:
+      return Response(status=404)
 
 class Users(Resource):
 
   # Fecth all users from the DB
   def get(self):
+    students = database_commands.get_students()
     data = []
-    for user in Userm.query.all():
+    for student in students:
+      isActive = database_commands.check_active_users(student.id)
       tempData = {
-        "id": user.id,
-        "status": user.status,
-        "privateKey": str(user.privateKey),
-        "publicKey": str(user.publicKey)
+        "id": student.id,
+        "connect_time": str(student.connect_time),
+        "disconnect_time": str(student.disconnect_time),
+        "isActive": isActive
       }
       data.append(tempData)
 
@@ -99,24 +91,31 @@ class Users(Resource):
     
     pubkey = key.publickey()
     publicKey = pubkey.exportKey('OpenSSH')
-
-    uniqueID = str(uuid.uuid4())
     
-    # Create a new user object
-    newUser = Userm(
-      id = uniqueID,
-      password = None,
-      privateKey = str(privateKey),
-      publicKey = str(publicKey),
-      status = str(request.json["status"])
-    )
+    privateKey = str(privateKey),
+    publicKey = str(publicKey),
+    id = str(request.json["id"])
+    
+    message, success = file_commands.add_student(id, publicKey)
 
-    data = {
-      "id": uniqueID
-    }
+    if not success:
+      fail = message
 
-    # Add new user and commit changes!!
-    db.session.add(newUser)
-    db.session.commit()
+    else:
+      fail = database_commands.add_student(id)
 
-    return Response(json.dumps(data), status=201)
+    if fail == False:
+      data = {
+        "privateKey": privateKey
+      }
+      return Response(json.dumps(data), status=201)
+
+    else:
+      file_commands.delete_user(id)
+      data = {
+        "privateKey": ""
+      }
+      return Response(json.dumps(data), status=400)
+
+    
+

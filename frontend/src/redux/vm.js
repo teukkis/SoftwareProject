@@ -8,6 +8,11 @@ const vmReducer = (state = initialState, action) => {
 
   switch (action.type) {
     case SET_VMS:
+      action.payload.map(v => {
+        if (v.user === null) {
+          v.user = "--"
+        } 
+      })
       return { ...state, vms: action.payload }
 
     default:

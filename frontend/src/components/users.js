@@ -10,6 +10,8 @@ import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
+import WarningIcon from '@material-ui/icons/Warning';
+import CheckIcon from '@material-ui/icons/Check';
 
 import userService from '../services/userService'
 import portService from '../services/portService'
@@ -21,13 +23,34 @@ const columns = [
   {
     field: "id",
     headerName: "user ID",
-    width: 320
+    width: 120
   },
   {
-    field: "status",
-    headerName: "Status",
-    width: 100
+    field: "connect_time",
+    headerName: "Connected (hours ago)",
+    renderCell: (ValueFormatterParams) => {
+
+      return (
+      <div>
+        {(ValueFormatterParams.value)}
+        { ValueFormatterParams.value > 3 && ValueFormatterParams.data.isActive ? <WarningIcon color="secondary"/> : <span></span>}
+      </div>
+    )},
+    width: 200
   },
+  {
+    field: "isActive",
+    headerName: "Active",
+    renderCell: (ValueFormatterParams) => {
+      return (
+      <div>
+        {(ValueFormatterParams.value)}
+        { ValueFormatterParams.value === true ? <CheckIcon color="primary"/> : <span></span>}
+      </div>
+    )},
+    width: 150
+  }
+
 ]
 
 const useStyles = makeStyles((theme) => ({
@@ -54,7 +77,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 10,
   },
   dataGrid: {
-    height: 620, 
+    height: 631, 
     width: '95%',
     marginLeft: 14,
     paddingTop: 10
@@ -69,6 +92,7 @@ const Users = () => {
   const [ open, setOpen ] = useState(false)
 
   const users = useSelector( state => state.userReducer)
+  const vms = useSelector( state => state.vmReducer)
   const dispatch = useDispatch()
 
   const handleClose = () => {
@@ -107,7 +131,8 @@ const Users = () => {
       .getUsers()
       .then(response => {
         dispatch( setUsers(response) )
-      }).catch( error => console.log("couldn't retrieve users"))
+
+      }).catch( error => console.log(error))
   }
 
   useEffect( () => {

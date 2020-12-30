@@ -19,12 +19,15 @@ class Student(Base):
     connect_time = Column(DateTime, nullable = True)
     disconnect_time = Column(DateTime, nullable = True)
 
-engine = create_engine("sqlite:////home/developer/database/chipwhisperer.db")
+engine = create_engine("sqlite:////home/teukka/Desktop/SoftwareProject/software/chipwhisperer.db")
 
 Session = sessionmaker(bind=engine)
 
-def get_students(session):
+
+def get_students():
+    session = Session()
     students = session.query(Student).order_by(Student.id).all()
+    session.close()
     return students
 
 def get_student_by_id(id, session):
@@ -35,7 +38,8 @@ def get_student_by_id(id, session):
         print("Error querying student from the database with id: {}".format(id))
         return None
 
-def get_vms(session):
+def get_vms():
+    session = Session()
     vms = session.query(VirtualMachine).all()
     return vms
 
@@ -52,6 +56,15 @@ def get_vm_by_user(id, session):
     except:
         print("Didn't find virtual machine with user id: {}".format(id))
         return None
+
+def check_active_users(id):
+    session = Session()
+    try:
+        vm = session.query(VirtualMachine).filter(VirtualMachine.user == id).first()
+        print(str(vm.id))
+        return True
+    except:
+        return False
 
 def get_first_free_vm(session):
     try:
@@ -131,3 +144,37 @@ def disconnect_student(id):
     session.commit()
     session.close()
     return True
+
+def add_student(id):
+    session = Session()
+    ret = False
+    try:
+        student = Student()
+        student.id = id
+        student.password = get_random_string(6)
+        session.add(student)
+        session.commit()
+    except Exception as e:
+        session.rollback()
+        ret = e
+    finally:
+        session.close()
+        return ret
+
+def delete_user(id):
+    session = Session()
+    ret = False
+    try:
+        student = get_student_by_id(id, session)
+        session.delete(student)
+        session.commit()
+    except Exception as e:
+        session.rollback()
+        ret = e
+    finally:
+        session.close()
+        return ret
+
+def changePublicKey():
+    session = Session()
+    

@@ -14,13 +14,13 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   vm: {
-    height: 270,
+    height: 320,
   },
   users: {
     height: 695,
   },
   keys: {
-    height: 410,
+    height: 360,
   },
 }));
 

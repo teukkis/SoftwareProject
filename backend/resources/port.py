@@ -4,8 +4,6 @@ from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
 from jsonschema import validate, ValidationError
 from backend import db
-from backend.models import VirtualMachinem
-from backend.models import Userm
 
 
 class Port(Resource):

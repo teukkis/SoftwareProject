@@ -13,7 +13,6 @@ const sshReducer = (state = initialState, action) => {
       return { 
         ...state, 
         privateKey: action.payload.privateKey,
-        publicKey: action.payload.publicKey
       }
     case CLEAR_SSH_KEYS:
       return {

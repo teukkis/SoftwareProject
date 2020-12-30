@@ -2,7 +2,7 @@ import axios from 'axios'
 
 const url = 'http://localhost:5000/api/users/'
 
-const getUser = async (id) => {
+export const getUser = async (id) => {
   const response = await axios.get(`${url}${id}`)
   return response.data
 }
@@ -12,8 +12,8 @@ const getUsers = async () => {
   return response.data
 }
 
-const createUser = async () => {
-  const response = await axios.post(`${url}`, {status: "student"})
+const createUser = async (id) => {
+  const response = await axios.post(`${url}`, {id: id})
   return response.data
 }
 
