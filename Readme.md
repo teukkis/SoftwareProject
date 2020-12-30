@@ -1,3 +1,4 @@
+##Admin tools
 ### Backend
 
 First install python 3 virtual environment
@@ -25,6 +26,9 @@ python3 -m pip install --user virtualenv
 2. install npm by running command "sudo apt install npm"
 2. npm install ( npm rebuild if didn't work)
 3. npm start in dir frontend
+
+## User frontend/backend instructions
+https://docs.google.com/document/d/1eLq4cELIre191PyiXXTQSmdhI9Q_1StRKt-wmhKU3dY/edit?usp=sharing
 
 
 Database:
