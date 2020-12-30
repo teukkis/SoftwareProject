@@ -16,8 +16,6 @@ python3 -m pip install --user virtualenv
 4. Setup 
   `cd remoteChipWhiperer`
   `pip install -e .`
-  `flask init-db` (rewrite the existing database)
-  `flask testgen` (rewrite...)
 
 5. Start the app
   `flask run`
