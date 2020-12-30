@@ -14,7 +14,6 @@ python3 -m pip install --user virtualenv
   `export FLASK_ENV=development`
 
 4. Setup 
-  `cd remoteChipWhiperer`
   `pip install -e .`
 
 5. Start the app
