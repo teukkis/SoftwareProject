@@ -31,10 +31,12 @@ def send_message(msg):
             print("Error: {}".format(e))
             sleep(1)
 
-
-with open("/home/developer/Software/motd.txt","r") as f:
-    for l in f:
-        print(l[:-1])
+if os.getenv('MOTD_PATH'):
+    with open(os.getenv('MOTD_PATH'),"r") as f:
+        for l in f:
+            print(l[:-1])
+else:
+    print("MOTD not set")
 
 
 send_message("Connect:{}".format(username))

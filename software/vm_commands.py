@@ -1,6 +1,11 @@
+"""
+Functions to handle the virtual machines
+"""
+
 import sys
 import os
 from time import sleep
+import config
 
 def set_passwd(port, passwd):
     print("Setting password for virtual box: {}".format(port))

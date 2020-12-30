@@ -2,9 +2,10 @@ import os
 import subprocess
 import traceback
 import sys
-import config
+
 def run_sudo(cmd):
-    sudo_pass_cmd = subprocess.Popen(['echo', config.SUDO_PASS], stdout=subprocess.PIPE)
+    sudo_pass = "SoftwareProject"
+    sudo_pass_cmd = subprocess.Popen(['echo', sudo_pass], stdout=subprocess.PIPE)
     p=subprocess.Popen(["sudo","-S"] + cmd,stdin=sudo_pass_cmd.stdout, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     output, error = p.communicate()
     output = output.strip().decode("utf-8")
@@ -68,7 +69,7 @@ def set_ssh_key(username, key):
     
 def copy_chip_folder(username):
     user_folder = "/home/{}/".format(username)
-    cmd = ["cp", "-rT", config.CHIPWHISPERER_FOLDER, user_folder]
+    cmd = ["cp", "-r", "/home/developer/Software/chipwhisperer", user_folder]
     output,success = run_sudo(cmd)
     return output, success
 
@@ -80,18 +81,17 @@ def add_student(username, key):
     output, success = set_ssh_key(username, key)
     if not success:
         return output, False
+    
     bashrc_file = "/home/{}/.bashrc".format(username)
-    cmd = ["echo", config.BASHRC_FILE_COMMAND, ">>", bashrc_file]
+    cmd = ["echo", "python /home/developer/Software/start.py", ">>", bashrc_file]
     output,success = run_sudo(cmd)
     if not success:
         return output, False
+    copy_chip_folder(username)
     
-    output, success = copy_chip_folder(username)
-    if not success:
-        return output, False
     return "Succesfully added user", True
-if __name__ == "__main__":
-    if len(sys.argv)>2:
-        print(add_student(sys.argv[1], sys.argv[2]))
-    else:
-        print(delete_user(sys.argv[1]))
+
+if len(sys.argv)<4:
+    print(add_student(sys.argv[1], sys.argv[2]))
+else:
+    print(delete_user(sys.argv[1]))

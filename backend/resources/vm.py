@@ -30,11 +30,9 @@ class Vms(Resource):
 
   # Fetch all virtual machines from the DB
   def get(self):
-    vms = database_commands.get_vms()
-    print(vms)
+    vms = database_commands.get_all_vms()
     data = []
     for vm in vms:
-      print(vm)
       tempData = {
         "id": vm.id,
         "user": vm.user,

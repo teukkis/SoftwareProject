@@ -13,7 +13,7 @@ class User(Resource):
 
   # Fetch one user based on its id
   def get(self, id):
-    student = database_commands.get_student_by_id(id)
+    student = database_commands.get_student(id)
     if student is None:
       data = {
       "message": "Not found"
@@ -30,10 +30,10 @@ class User(Resource):
   # Delete the user based on its id
   def delete(self, id):
     
-    failure = database_commands.delete_user(id)
+    failure = database_commands.delete_student(id)
 
     if failure == False:
-      file_commands.delete_user(id)
+      file_commands.delete_student(id)
       return Response(status=204)
 
     else:
@@ -67,10 +67,10 @@ class Users(Resource):
 
   # Fecth all users from the DB
   def get(self):
-    students = database_commands.get_students()
+    students = database_commands.get_all_students()
     data = []
     for student in students:
-      isActive = database_commands.check_active_users(student.id)
+      isActive = database_commands.get_active_students(student.id)
       tempData = {
         "id": student.id,
         "connect_time": str(student.connect_time),
