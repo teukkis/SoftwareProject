@@ -31,7 +31,7 @@ python3 -m pip install --user virtualenv
 https://docs.google.com/document/d/1eLq4cELIre191PyiXXTQSmdhI9Q_1StRKt-wmhKU3dY/edit?usp=sharing
 
 
-Database:
+## Database formating
 |virtual_machine |student        |
 |----------------|---------------|
 |id              |id             |
