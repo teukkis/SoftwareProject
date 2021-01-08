@@ -13,7 +13,7 @@ def handler(signum, frame):
     if connected == True:
         global username
         send_message("User_left:{}".format(username))
-        quit()
+    quit()
 
 def send_message(msg):
     while True:

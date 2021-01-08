@@ -1,5 +1,6 @@
 ##################################################################################################################################################################
 Welcome to the Chipwhisperer server.
+FOR THE PUTTY USERS:
 Wait for the server to send you port that you need to forward in your PuTTy-program.
 How to forward the port:
 1. Click the PuTTy-icon in the top-left corner of the window
@@ -9,9 +10,18 @@ How to forward the port:
 5. Into "Destination".field you need to write: "localhost:xxxx" where xxxx = port
 6. Don't change any other settings and press "Add"-button
 7. Press Apply and you are done. Now you can access your Jupyter notebook by writing: "localhost:xxxx" to your browsers address field (xxxx = port)
+8. After you are done with your exercises or want to continue later type "disconnect" and you will be disconnected.
 
-After you are done with your exercises or want to continue later type "disconnect" and you will be disconnected.
+FOR PEOPLE CONNECTING FROM TERMINAL:
+Wait for the server to send you port you need to forward
+How to forward the port:
+1. Open new terminal
+2. Use the same command you used to connect to the server but add "-R xxxx:lovalhost:xxxx" to your command
+3. When you want to stop working type "disconnect" on one of the terminals and then close the other
 
-IF YOU CLOSE PUTTY WITHOUT DISCONNECTING FIRST THE VIRTUAL MACHINE WILL STAY ON AND CAN'T BE ACCESSED BY OTHER STUDENTS
+
+
+
+IF YOU CLOSE PUTTY/CONNECTION WITHOUT DISCONNECTING FIRST THE VIRTUAL MACHINE WILL STAY ON AND CAN'T BE ACCESSED BY OTHER STUDENTS
 ##################################################################################################################################################################
 
