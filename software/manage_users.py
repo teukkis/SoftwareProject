@@ -37,8 +37,21 @@ def delete_user(username):
     print("Succesfully removed user {}".format(username))
     return
 
+def regenSSH(username):
+    private,public = genSSH()
+
+    output, success = file_commands.set_ssh_key(username,public)
+    if not success:
+        print("Failed changing the ssh key for user: {}".format(username))
+        print(output)
+        return
+    print("Succesfully updated the ssh key for user: {}\n Send this private key to the student:\n{}".format(username,private))
+    return
+
 if __name__ == "__main__":
     if sys.argv[1] == "A":
         create_user(sys.argv[2])
     elif sys.argv[1] == "R":
         delete_user(sys.argv[2])
+    elif sys.argv[1] == "S":
+        regenSSH(sys.argv[2])
