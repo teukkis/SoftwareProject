@@ -16,7 +16,7 @@ def get_random_string(length):
     """
     Generates a string of random letters with given length
     """
-    letters = "abcdefghijklmnopqrstuvwxyz1234567890-_"
+    letters = "abcdefghijklmnopqrstuvwxyz1234567890"
     result_str = ''.join(random.choice(letters) for i in range(length))
     return result_str
 
@@ -242,7 +242,7 @@ def get_all_students():
 def get_active_students(id):
     session = Session()
     ret = True
-    if session.query(VirtualMachine).filter(user==id).first() == None:
+    if session.query(VirtualMachine).filter(VirtualMachine.user==id).first() == None:
         ret = False
     session.close()
     return ret
