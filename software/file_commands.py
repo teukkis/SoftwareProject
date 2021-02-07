@@ -68,9 +68,19 @@ def set_ssh_key(username, key):
     
 def copy_chip_folder(username):
     user_folder = "/home/{}/".format(username)
-    cmd = ["cp", "-rT", config.CHIPWHISPERER_FOLDER, user_folder]
+    cmd = ["cp", "-r", config.CHIPWHISPERER_FOLDER, user_folder]
     output,success = run_sudo(cmd)
     return output, success
+
+def delete_chip_folder(username):
+    user_folder = "/home/{}/chipwhisperer".format(username)
+    cmd = ["rm", "-r", user_folder]
+    output, success = run_sudo(cmd)
+
+def rewrite_chip_folder(username):
+    delete_chip_folder(username)
+    copy_chip_folder(username)
+    return
 
 def add_student(username, key):
     output, success = create_user(username)

@@ -48,6 +48,10 @@ def regenSSH(username):
     print("Succesfully updated the ssh key for user: {}\n Send this private key to the student:\n{}".format(username,private))
     return
 
+def rewrite_chip(username):
+    file_commands.rewrite_chip_folder(username)
+    return
+
 if __name__ == "__main__":
     if sys.argv[1] == "A":
         create_user(sys.argv[2])
@@ -55,3 +59,5 @@ if __name__ == "__main__":
         delete_user(sys.argv[2])
     elif sys.argv[1] == "S":
         regenSSH(sys.argv[2])
+    elif sys.argv[1] == "C":
+        rewrite_chip(sys.argv[2])
